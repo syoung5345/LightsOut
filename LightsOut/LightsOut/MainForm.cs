@@ -13,9 +13,9 @@ namespace LightsOut
     public partial class MainForm : Form
     {
         private const int GridOffset = 25;  // Distance from upper-left side of window
-        private const int GridLength = 200; // Size in pixels of grid
-        private const int NumCells = 3;     // Number of cells in grid
-        private const int CellLength = GridLength / NumCells;
+        private int GridLength = 200; // Size in pixels of grid
+        private int NumCells = 3;     // Number of cells in grid
+        //private int CellLength = GridLength / NumCells;
 
         private bool[,] grid; // Stores on/off state of cells in grid
         private Random rand;  // Used to generate random numbers
@@ -32,6 +32,8 @@ namespace LightsOut
         private void MainForm_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+
+            int CellLength = GridLength / NumCells;
 
             for (int r = 0; r < NumCells; r++)
             {
@@ -64,6 +66,8 @@ namespace LightsOut
 
         private void MainForm_MouseDown(object sender, MouseEventArgs e)
         {
+            int CellLength = GridLength / NumCells;
+
             // Make sure click was inside the grid
             if (e.X < GridOffset || e.X > CellLength * NumCells + GridOffset ||
             e.Y < GridOffset || e.Y > CellLength * NumCells + GridOffset)
@@ -99,8 +103,10 @@ namespace LightsOut
             return result;
         }
 
-        private void newGameButton_Click(object sender, EventArgs e)
+        private void StartNewGame()
         {
+            grid = new bool[NumCells, NumCells];
+
             // Fill grid with either white or black
             for (int r = 0; r < NumCells; r++)
                 for (int c = 0; c < NumCells; c++)
@@ -108,6 +114,11 @@ namespace LightsOut
 
             // Redraw grid
             this.Invalidate();
+        }
+
+        private void newGameButton_Click(object sender, EventArgs e)
+        {
+            StartNewGame();
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -129,6 +140,24 @@ namespace LightsOut
         {
             AboutForm aboutBox = new AboutForm();
             aboutBox.ShowDialog(this);
+        }
+
+        private void x3ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NumCells = 3;
+            StartNewGame();
+        }
+
+        private void x4ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NumCells = 4;
+            StartNewGame();
+        }
+
+        private void x5ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NumCells = 5;
+            StartNewGame();
         }
     }
 }
